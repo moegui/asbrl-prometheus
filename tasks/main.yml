@@ -4,11 +4,6 @@
     path: /home/{{default_user}}/prometheus/
     state: directory  
 
-- name: Copy Prometheus
-  copy:
-    src: ./files/
-    dest: /home/{{default_user}}/prometheus/
-
 - name: Prometheus Data Volume
   docker_volume:
     name: prometheus_data

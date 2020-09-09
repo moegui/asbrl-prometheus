@@ -1,31 +1,46 @@
 ASBRL-PROMETHEUS
 =========
 
-A brief description of the role goes here.
+Deploy a Prometheus as a Docker container.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+Need to be Docker engine installed.
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+- default_user: 'ubuntu'
+- TZ: 'Etc/GMT'
+- BUILD: 'v2.20.1'
+- RETENTION_TIME: '30d'
+- SCRAPE_INTERVAL: '15s'
+- EVALUATION_INTERVAL: '15s'
+- MYSQL_HOSTS: ''
+- LINUX_HOSTS: ''
+- PG_HOSTS:  ''
+- MONGO_HOSTS: ''  
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+None
 
 Example Playbook
 ----------------
 
 Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+      - name: Deploy Prometheus
+        include_role:
+          name: asbrl-prometheus
+        vars:
+          LINUX_HOSTS: "{{ PROM_LINUX_HOSTS }}"
+          MONGO_HOSTS: "{{ PROM_MONGO_HOSTS }}"
+          PG_HOSTS: "{{ PROM_PG_HOSTS }}"
+        tags:
+          - prometheus
 
 License
 -------
@@ -35,4 +50,4 @@ BSD
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Moegui.com

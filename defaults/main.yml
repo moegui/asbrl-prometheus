@@ -1,0 +1,11 @@
+---
+default_user: 'ubuntu'
+TZ: 'Etc/GMT'
+BUILD: 'v2.20.1'
+RETENTION_TIME: '30d'
+SCRAPE_INTERVAL: '15s'
+EVALUATION_INTERVAL: '15s'
+MYSQL_HOSTS: ''
+LINUX_HOSTS: ''
+PG_HOSTS:  ''
+MONGO_HOSTS: ''  

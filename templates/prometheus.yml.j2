@@ -68,3 +68,13 @@ scrape_configs:
         ip: '{{ host }}'
 {% endfor %}
 {% endif %}
+
+{% if CADVISOR_HOSTS|length %}
+  - job_name: 'cadvisor'
+    static_configs:
+{% for host in CADVISOR_HOSTS %}
+    - targets: [ '{{ host }}:9080' ]
+      labels: 
+        ip: '{{ host }}'
+{% endfor %}
+{% endif %}

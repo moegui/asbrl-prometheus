@@ -68,3 +68,13 @@ scrape_configs:
         ip: '{{ host }}'
 {% endfor %}
 {% endif %}
+
+{% if TRAEFIK_HOSTS|length %}
+  - job_name: 'traefik'
+    static_configs:
+{% for host in TRAEFIK_HOSTS %}
+    - targets: [ '{{ host }}:8080' ]
+      labels: 
+        ip: '{{ host }}'
+{% endfor %}
+{% endif %}

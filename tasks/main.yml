@@ -14,9 +14,9 @@
     src: prometheus.yml.j2
     dest: /home/{{default_user}}/prometheus/prometheus.yml       
 
-- name: copy genesis.json file
+- name: copy alert.rules file
   template:
-    src: "{{ role_path }}/files/alert.rules.yml.j2"
+    src: "alert.rules.yml.j2"
     dest: "/home/{{default_user}}/prometheus/alert.rules.yml.j2"  
 
 - name: Prometheus

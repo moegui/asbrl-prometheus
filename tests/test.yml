@@ -9,7 +9,7 @@
   - name: copy role locally (DEBUG)
     copy:
       src: ../
-      dest: ./roles/asbrl-prometheus
+      dest: /etc/ansible/roles/asbrl-prometheus
   
   tasks:
 

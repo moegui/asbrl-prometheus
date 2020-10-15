@@ -288,7 +288,7 @@ groups:
       annotations:
         summary: "Host EDAC Correctable Errors detected (instance {{ '{{' }} $labels.instance {{ '}}' }})"
         description: |
-          {{ '{{' }} $labels.instance {{ '}}' }} has had {{ '{{' }} printf \"%.0f\" $value {{ '}}' }} correctable memory errors reported by EDAC in the last 5 minutes.\n  VALUE = {{ '{{' }} $value {{ '}}' }}\n  LABELS: {{ '{{' }} $labels {{ '}}' }}
+          {{ '{{' }} $labels.instance {{ '}}' }} has had {{ '{{' }} printf "%.0f" $value {{ '}}' }} correctable memory errors reported by EDAC in the last 5 minutes.\n  VALUE = {{ '{{' }} $value {{ '}}' }}\n  LABELS: {{ '{{' }} $labels {{ '}}' }}
           {% if LINUX_DASHBOARD is defined %} 
           For more information: {{ LINUX_DASHBOARD }}  
           {% endif %}
@@ -301,7 +301,7 @@ groups:
       annotations:
         summary: "Host EDAC Uncorrectable Errors detected (instance {{ '{{' }} $labels.instance {{ '}}' }})"
         description: |
-          {{ '{{' }} $labels.instance {{ '}}' }} has had {{ '{{' }} printf \"%.0f\" $value {{ '}}' }} uncorrectable memory errors reported by EDAC in the last 5 minutes.\n  VALUE = {{ '{{' }} $value {{ '}}' }}\n  LABELS: {{ '{{' }} $labels {{ '}}' }}
+          {{ '{{' }} $labels.instance {{ '}}' }} has had {{ '{{' }} printf "%.0f" $value {{ '}}' }} uncorrectable memory errors reported by EDAC in the last 5 minutes.\n  VALUE = {{ '{{' }} $value {{ '}}' }}\n  LABELS: {{ '{{' }} $labels {{ '}}' }}
           {% if LINUX_DASHBOARD is defined %} 
           For more information: {{ LINUX_DASHBOARD }}  
           {% endif %}
@@ -314,7 +314,7 @@ groups:
       annotations:
         summary: "Host Network Receive Errors (instance {{ '{{' }} $labels.instance {{ '}}' }})"
         description: |
-          {{ '{{' }} $labels.instance {{ '}}' }} interface {{ '{{' }} $labels.device {{ '}}' }} has encountered {{ '{{' }} printf \"%.0f\" $value {{ '}}' }} receive errors in the last five minutes.\n  VALUE = {{ '{{' }} $value {{ '}}' }}\n  LABELS: {{ '{{' }} $labels {{ '}}' }}
+          {{ '{{' }} $labels.instance {{ '}}' }} interface {{ '{{' }} $labels.device {{ '}}' }} has encountered {{ '{{' }} printf "%.0f" $value {{ '}}' }} receive errors in the last five minutes.\n  VALUE = {{ '{{' }} $value {{ '}}' }}\n  LABELS: {{ '{{' }} $labels {{ '}}' }}
           {% if LINUX_DASHBOARD is defined %} 
           For more information: {{ LINUX_DASHBOARD }}  
           {% endif %}
@@ -327,7 +327,7 @@ groups:
       annotations:
         summary: "Host Network Transmit Errors (instance {{ '{{' }} $labels.instance {{ '}}' }})"
         description: |
-          {{ '{{' }} $labels.instance {{ '}}' }} interface {{ '{{' }} $labels.device {{ '}}' }} has encountered {{ '{{' }} printf \"%.0f\" $value {{ '}}' }} transmit errors in the last five minutes.\n  VALUE = {{ '{{' }} $value {{ '}}' }}\n  LABELS: {{ '{{' }} $labels {{ '}}' }}
+          {{ '{{' }} $labels.instance {{ '}}' }} interface {{ '{{' }} $labels.device {{ '}}' }} has encountered {{ '{{' }} printf "%.0f" $value {{ '}}' }} transmit errors in the last five minutes.\n  VALUE = {{ '{{' }} $value {{ '}}' }}\n  LABELS: {{ '{{' }} $labels {{ '}}' }}
           {% if LINUX_DASHBOARD is defined %} 
           For more information: {{ LINUX_DASHBOARD }}  
           {% endif %}
@@ -340,7 +340,7 @@ groups:
       annotations:
         summary: "Host Network Interface Saturated (instance {{ '{{' }} $labels.instance {{ '}}' }})"
         description: |
-          The network interface \"{{ '{{' }} $labels.interface {{ '}}' }}\" on \"{{ '{{' }} $labels.instance {{ '}}' }}\" is getting overloaded.\n  VALUE = {{ '{{' }} $value {{ '}}' }}\n  LABELS: {{ '{{' }} $labels {{ '}}' }}
+          The network interface "{{ '{{' }} $labels.interface {{ '}}' }}" on "{{ '{{' }} $labels.instance {{ '}}' }}" is getting overloaded.\n  VALUE = {{ '{{' }} $value {{ '}}' }}\n  LABELS: {{ '{{' }} $labels {{ '}}' }}
           {% if LINUX_DASHBOARD is defined %} 
           For more information: {{ LINUX_DASHBOARD }}  
           {% endif %}

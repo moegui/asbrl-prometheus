@@ -20,7 +20,17 @@ Role Variables
 - MYSQL_HOSTS: ''
 - LINUX_HOSTS: ''
 - PG_HOSTS:  ''
-- MONGO_HOSTS: ''  
+- MONGO_HOSTS: ''
+- CADVISOR_HOSTS: ''  
+- TRAEFIK_HOSTS: ''
+- CONTAINER_NAME: "prometheus"
+- DOCKER_CPU_PERIOD: 0
+- DOCKER_CPU_QUOTA: 0
+- DOCKER_MEMORY: 0
+- CONTAINER_STATE: 'started'
+- VOLUME_STATE: 'present'
+- DOCKER_LABELS:
+    tag1: test
 
 Dependencies
 ------------

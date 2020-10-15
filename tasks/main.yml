@@ -1,32 +1,37 @@
 ---
 - name: Create Prometheus directory
   file:
-    path: /home/{{default_user}}/prometheus/
+    path: /home/{{default_user}}/{{ CONTAINER_NAME }}/
     state: directory  
 
 - name: Prometheus Data Volume
   docker_volume:
-    name: prometheus_data
-    state: present
+    name: "{{ CONTAINER_NAME }}_data"
+    state: "{{ VOLUME_STATE }}"
 
 - name: Prometheus config file
   template:
     src: prometheus.yml.j2
-    dest: /home/{{default_user}}/prometheus/prometheus.yml       
+    dest: /home/{{default_user}}/{{ CONTAINER_NAME }}/prometheus.yml       
 
 - name: Prometheus
   docker_container:
-    name: "prometheus"
+    name: "{{ CONTAINER_NAME }}"
     image: "prom/prometheus:{{ BUILD }}"
     command: " --config.file='/etc/prometheus/prometheus.yml' --storage.tsdb.retention.time={{ RETENTION_TIME }}"
     pull: "true"
     recreate: "yes"
     env:
       TZ: "{{ TZ }}"      
-    state: "started"
+    cpu_period: "{{ DOCKER_CPU_PERIOD }}"
+    cpu_quota: "{{ DOCKER_CPU_QUOTA }}"
+    memory: "{{ DOCKER_MEMORY }}"
+    state: "{{ CONTAINER_STATE }}"
     restart_policy: "unless-stopped"
     published_ports:
         - "0.0.0.0:9090:9090"
     volumes:
-      - /home/{{default_user}}/prometheus/:/etc/prometheus/
-      - prometheus_data:/prometheus
+      - /home/{{default_user}}/{{ CONTAINER_NAME }}/:/etc/prometheus/
+      - '{{ CONTAINER_NAME }}_data:/prometheus'
+    labels: 
+      "{{ DOCKER_LABELS }}"

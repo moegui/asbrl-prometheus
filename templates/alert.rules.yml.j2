@@ -8,7 +8,11 @@ groups:
         severity: warning
       annotations:
         summary: "Host out of memory (instance {{ $labels.instance }})"
-        description: "Node memory is filling up (< 10% left)\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }} {% if LINUX_DASHBOARD is defined %} For more information: {{ LINUX_DASHBOARD }}  {% endif %}"
+        description: |
+          Node memory is filling up (< 10% left)\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }} 
+          {% if LINUX_DASHBOARD is defined %} 
+          For more information: {{ LINUX_DASHBOARD }}  
+          {% endif %}
       
     - alert: HostMemoryUnderMemoryPressure
       expr: rate(node_vmstat_pgmajfault[1m]) > 1000

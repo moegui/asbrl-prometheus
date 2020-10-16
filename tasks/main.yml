@@ -14,6 +14,11 @@
     src: prometheus.yml.j2
     dest: /home/{{default_user}}/{{ CONTAINER_NAME }}/prometheus.yml       
 
+- name: copy alert.rules file
+  template:
+    src: "alert.rules.yml.j2"
+    dest: "/home/{{default_user}}/prometheus/alert.rules.yml"  
+
 - name: Prometheus
   docker_container:
     name: "{{ CONTAINER_NAME }}"

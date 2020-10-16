@@ -31,6 +31,10 @@ Role Variables
 - VOLUME_STATE: 'present'
 - DOCKER_LABELS:
     tag1: test
+- DOCKER_PUBLISHED_PORTS:
+    - "9090:9090"
+- DOCKER_EXPOSED_PORTS:
+    - "9090"
 
 Dependencies
 ------------

@@ -28,10 +28,9 @@
     memory: "{{ DOCKER_MEMORY }}"
     state: "{{ CONTAINER_STATE }}"
     restart_policy: "unless-stopped"
-    published_ports:
-        - "0.0.0.0:9090:9090"
+    published_ports: "{{ DOCKER_PUBLISHED_PORTS | default(omit) }}"
+    exposed_ports: "{{ DOCKER_EXPOSED_PORTS | default(omit) }}"
     volumes:
       - /home/{{default_user}}/{{ CONTAINER_NAME }}/:/etc/prometheus/
       - '{{ CONTAINER_NAME }}_data:/prometheus'
-    labels: 
-      "{{ DOCKER_LABELS }}"
+    labels: "{{ DOCKER_LABELS | default(omit) }}"

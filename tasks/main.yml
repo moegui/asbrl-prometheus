@@ -1,8 +1,9 @@
 ---
 - name: Create Prometheus directory
   file:
-    path: /home/{{default_user}}/{{ CONTAINER_NAME }}/
-    state: directory  
+    path: /home/{{ default_user }}/{{ CONTAINER_NAME }}/
+    state: directory
+    mode: 0644
 
 - name: Prometheus Data Volume
   docker_volume:
@@ -12,12 +13,14 @@
 - name: Prometheus config file
   template:
     src: prometheus.yml.j2
-    dest: /home/{{default_user}}/{{ CONTAINER_NAME }}/prometheus.yml       
+    dest: /home/{{ default_user }}/{{ CONTAINER_NAME }}/prometheus.yml
+    mode: 0644
 
 - name: copy alert.rules file
   template:
     src: "alert.rules.yml.j2"
-    dest: "/home/{{default_user}}/prometheus/alert.rules.yml"  
+    dest: "/home/{{ default_user }}/prometheus/alert.rules.yml"
+    mode: 0644
 
 - name: Prometheus
   docker_container:
@@ -27,7 +30,7 @@
     pull: "true"
     recreate: "yes"
     env:
-      TZ: "{{ TZ }}"      
+      TZ: "{{ TZ }}"
     cpu_period: "{{ DOCKER_CPU_PERIOD }}"
     cpu_quota: "{{ DOCKER_CPU_QUOTA }}"
     memory: "{{ DOCKER_MEMORY }}"
@@ -36,6 +39,6 @@
     published_ports: "{{ DOCKER_PUBLISHED_PORTS | default(omit) }}"
     exposed_ports: "{{ DOCKER_EXPOSED_PORTS | default(omit) }}"
     volumes:
-      - /home/{{default_user}}/{{ CONTAINER_NAME }}/:/etc/prometheus/
+      - /home/{{ default_user }}/{{ CONTAINER_NAME }}/:/etc/prometheus/
       - '{{ CONTAINER_NAME }}_data:/prometheus'
     labels: "{{ DOCKER_LABELS | default(omit) }}"

@@ -3,7 +3,7 @@
   file:
     path: /home/{{ default_user }}/{{ CONTAINER_NAME }}/
     state: directory
-    mode: 0644
+    mode: 0755
 
 - name: Prometheus Data Volume
   docker_volume:

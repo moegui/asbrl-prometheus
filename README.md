@@ -52,7 +52,7 @@ Example Playbook
           MONGO_HOSTS: "{{ PROM_MONGO_HOSTS }}"
           PG_HOSTS: "{{ PROM_PG_HOSTS }}"
         tags:
-          - prometheus
+          - asbrl-prometheus
 
 License
 -------

@@ -3,24 +3,32 @@
   file:
     path: /home/{{ default_user }}/{{ CONTAINER_NAME }}/
     state: directory
-    mode: 0644
+    mode: 0755
+  tags:
+  - asbrl-prometheus
 
 - name: Prometheus Data Volume
   docker_volume:
     name: "{{ CONTAINER_NAME }}_data"
     state: "{{ VOLUME_STATE }}"
+  tags:
+  - asbrl-prometheus
 
 - name: Prometheus config file
   template:
     src: prometheus.yml.j2
     dest: /home/{{ default_user }}/{{ CONTAINER_NAME }}/prometheus.yml
     mode: 0644
+  tags:
+  - asbrl-prometheus
 
 - name: copy alert.rules file
   template:
     src: "alert.rules.yml.j2"
     dest: "/home/{{ default_user }}/prometheus/alert.rules.yml"
     mode: 0644
+  tags:
+  - asbrl-prometheus
 
 - name: Prometheus
   docker_container:
@@ -42,3 +50,5 @@
       - /home/{{ default_user }}/{{ CONTAINER_NAME }}/:/etc/prometheus/
       - '{{ CONTAINER_NAME }}_data:/prometheus'
     labels: "{{ DOCKER_LABELS | default(omit) }}"
+  tags:
+  - asbrl-prometheus

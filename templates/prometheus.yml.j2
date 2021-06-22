@@ -85,3 +85,101 @@ scrape_configs:
         ip: '{{ host }}'
 {% endfor %}
 {% endif %}
+
+# my global config
+global:
+  scrape_interval: {{SCRAPE_INTERVAL }} # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+  evaluation_interval: {{ EVALUATION_INTERVAL }} # Evaluate rules every 15 seconds. The default is every 1 minute.
+  # scrape_timeout is set to the global default (10s).
+
+# Alertmanager configuration
+rule_files:
+  - alert.rules.yml
+alerting:
+  alertmanagers:
+  - static_configs:
+    - targets:
+      - '{{ ALERT_MANAGER_HOST }}:{{ ALERT_MANAGER_PORT }}'
+
+# A scrape configuration containing exactly one endpoint to scrape:
+# Here it's Prometheus itself.
+scrape_configs:
+  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+  - job_name: 'prometheus'
+    static_configs:
+    - targets: ['localhost:9090']
+
+{% if MYSQL_HOSTS|length %}
+  - job_name: 'mysql-exporter'
+    metrics_path: /metrics
+    static_configs:
+{% for host in MYSQL_HOSTS %}
+    - targets: [ '{{ host }}:9104' ]
+      labels: 
+        ip: '{{ host }}'
+{% endfor %}
+{% endif %}
+
+{% if LINUX_HOSTS|length %}
+  - job_name: 'linux-exporter'
+    metrics_path: /metrics
+    static_configs:
+{% for host in LINUX_HOSTS %}
+    - targets: [ '{{ host }}:9100' ]
+      labels: 
+        ip: '{{ host }}'
+{% endfor %}
+{% endif %}
+
+{% if PG_HOSTS|length %}
+  - job_name: 'pg-exporter'
+    metrics_path: /metrics
+    static_configs:
+{% for host in PG_HOSTS %}
+    - targets: [ '{{ host }}:9187' ]
+      labels: 
+        ip: '{{ host }}'
+{% endfor %}
+{% endif %}
+
+{% if MONGO_HOSTS|length %}
+  - job_name: 'mongo-exporter'
+    metrics_path: /metrics
+    static_configs:
+{% for host in MONGO_HOSTS %}
+    - targets: [ '{{ host }}:9216' ]
+      labels: 
+        ip: '{{ host }}'
+{% endfor %}
+{% endif %}
+
+{% if CADVISOR_HOSTS|length %}
+  - job_name: 'cadvisor'
+    static_configs:
+{% for host in CADVISOR_HOSTS %}
+    - targets: [ '{{ host }}:9080' ]
+      labels: 
+        ip: '{{ host }}'
+{% endfor %}
+{% endif %}
+
+
+{% if TRAEFIK_HOSTS|length %}
+  - job_name: 'traefik'
+    static_configs:
+{% for host in TRAEFIK_HOSTS %}
+    - targets: [ '{{ host }}:8080' ]
+      labels: 
+        ip: '{{ host }}'
+{% endfor %}
+{% endif %}
+
+{% if PROM_NODE_MONITOR_HOSTS|length %}
+  - job_name: 'nodemonitor'
+    static_configs:
+{% for host in PROM_NODE_MONITOR_HOSTS %}
+    - targets: [ '{{ host }}:{{PROM_NODE_MONITOR_HOSTS_PORT}}' ]
+      labels: 
+        ip: '{{ host }}'
+{% endfor %}
+{% endif %}

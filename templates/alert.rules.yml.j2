@@ -163,18 +163,18 @@ groups:
     # 1000 context switches is an arbitrary number.
     # Alert threshold depends on nature of application.
     # Please read: https://github.com/samber/awesome-prometheus-alerts/issues/58
-    - alert: HostContextSwitching
-      expr: (rate(node_context_switches_total[5m])) / (count without(cpu, mode) (node_cpu_seconds_total{mode="idle"})) > 1000
-      for: 5m
-      labels:
-        severity: warning
-      annotations:
-        summary: "Host context switching (instance {{ '{{' }} $labels.instance {{ '}}' }})"
-        description: |
-          Context switching is growing on node (> 1000 / s)\n  VALUE = {{ '{{' }} $value {{ '}}' }}\n  LABELS: {{ '{{' }} $labels {{ '}}' }}
-          {% if LINUX_DASHBOARD is defined %} 
-          For more information: {{ LINUX_DASHBOARD }}  
-          {% endif %}
+    #- alert: HostContextSwitching
+    #  expr: (rate(node_context_switches_total[5m])) / (count without(cpu, mode) (node_cpu_seconds_total{mode="idle"})) > 1000
+    #  for: 5m
+    #  labels:
+    #    severity: warning
+    #  annotations:
+    #    summary: "Host context switching (instance {{ '{{' }} $labels.instance {{ '}}' }})"
+    #    description: |
+    #      Context switching is growing on node (> 1000 / s)\n  VALUE = {{ '{{' }} $value {{ '}}' }}\n  LABELS: {{ '{{' }} $labels {{ '}}' }}
+    #      {% if LINUX_DASHBOARD is defined %} 
+    #      For more information: {{ LINUX_DASHBOARD }}  
+    #      {% endif %}
 
     - alert: HostSwapIsFillingUp
       expr: (1 - (node_memory_SwapFree_bytes / node_memory_SwapTotal_bytes)) * 100 > 80
@@ -370,3 +370,32 @@ groups:
           {% if LINUX_DASHBOARD is defined %} 
           For more information: {{ LINUX_DASHBOARD }}  
           {% endif %}
+
+
+{% if PROM_NODE_MONITOR_HOSTS|length %}
+{% for host in PROM_NODE_MONITOR_HOSTS %}
+    - alert: NodeAlarm{{host}}
+      expr: (avg(avg_over_time(NodeCounter{exported_instance="max-last-round"}[15s])) -  avg(avg_over_time(NodeCounter{exported_instance="{{host}}"}[15s]))) > 100
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: "Host Network Transmit Errors (instance {{ '{{' }} $labels.instance {{ '}}' }})"
+        description: |
+          {{host}} last-round is not increasing properly and it is far from last-round of reference.
+{% endfor %}        
+{% endif %}
+
+{% if PROM_NODE_INOTIFY_MONITOR_HOSTS|length %}
+{% for host in PROM_NODE_INOTIFY_MONITOR_HOSTS %}
+    - alert: NodeINotifyAlarm{{host}}
+      expr: (NodeInotify{instance="{{host}}:{{PROM_NODE_INOTIFY_MONITOR_HOSTS_PORT}}"}) == 0
+      for: 5s
+      labels:
+        severity: critical
+      annotations:
+        summary: "Host Network Transmit Errors (instance {{ '{{' }} $labels.instance {{ '}}' }})"
+        description: |
+          {{host}} file is not been updated for the last 5 seconds.
+{% endfor %}        
+{% endif %}

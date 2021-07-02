@@ -374,28 +374,24 @@ groups:
 
 {% if PROM_NODE_MONITOR_HOSTS|length %}
 {% for host in PROM_NODE_MONITOR_HOSTS %}
+    - alert: NodeAlarmINotify{{host}}
+      expr: NodeCounter{exported_instance="{{host}}", instance="{{host}}:{{PROM_NODE_MONITOR_HOSTS_PORT}}", ip="{{host}}", value="file-changes"} == 0
+      for: 2s
+      labels:
+        severity: critical
+      annotations:
+        summary: "Host Network Transmit Errors (instance {{ '{{' }} $labels.instance {{ '}}' }})"
+        description: |
+          {{host}} ledger.block.sqlite-wal is not updating properly.
+
     - alert: NodeAlarm{{host}}
-      expr: (avg(avg_over_time(NodeCounter{exported_instance="max-last-round"}[15s])) -  avg(avg_over_time(NodeCounter{exported_instance="{{host}}"}[15s]))) > 100
+      expr: (avg(avg_over_time(NodeCounter{exported_instance="{{host}}", instance="{{host}}:{{PROM_NODE_MONITOR_HOSTS_PORT}}", ip="{{host}}", value="max-last-round"}[15s])) -  avg(avg_over_time(NodeCounter{exported_instance="{{host}}", instance="{{host}}:{{PROM_NODE_MONITOR_HOSTS_PORT}}", ip="{{host}}", value="last-round"}[15s]))) > 40
       for: 1m
       labels:
         severity: critical
       annotations:
         summary: "Host Network Transmit Errors (instance {{ '{{' }} $labels.instance {{ '}}' }})"
         description: |
-          {{host}} last-round is not increasing properly and it is far from last-round of reference.
-{% endfor %}        
-{% endif %}
-
-{% if PROM_NODE_INOTIFY_MONITOR_HOSTS|length %}
-{% for host in PROM_NODE_INOTIFY_MONITOR_HOSTS %}
-    - alert: NodeINotifyAlarm{{host}}
-      expr: (NodeInotify{instance="{{host}}:{{PROM_NODE_INOTIFY_MONITOR_HOSTS_PORT}}"}) == 0
-      for: 5s
-      labels:
-        severity: critical
-      annotations:
-        summary: "Host Network Transmit Errors (instance {{ '{{' }} $labels.instance {{ '}}' }})"
-        description: |
-          {{host}} file is not been updated for the last 5 seconds.
+          {{host}} `last-round` is not increasing properly
 {% endfor %}        
 {% endif %}

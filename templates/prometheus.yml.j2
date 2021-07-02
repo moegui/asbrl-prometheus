@@ -96,14 +96,3 @@ scrape_configs:
         ip: '{{ host }}'
 {% endfor %}
 {% endif %}
-
-{% if PROM_NODE_INOTIFY_MONITOR_HOSTS|length %}
-  - job_name: 'nodeinotifymonitor'
-    scrape_interval: 2s
-    static_configs:
-{% for host in PROM_NODE_INOTIFY_MONITOR_HOSTS %}
-    - targets: [ '{{ host }}:{{PROM_NODE_INOTIFY_MONITOR_HOSTS_PORT}}' ]
-      labels: 
-        ip: '{{ host }}'
-{% endfor %}
-{% endif %}
